@@ -1,5 +1,12 @@
+<?php
+
+include 'config.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,11 +29,6 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            color: var(--text-color);
-            background-color: #f9f9f9;
         }
 
         .container {
@@ -221,6 +223,7 @@
         /* Categories */
         .section-title {
             font-size: 28px;
+            color: var(--black);
             margin: 50px 0 25px;
             position: relative;
             padding-bottom: 10px;
@@ -233,6 +236,7 @@
             left: 0;
             width: 50px;
             height: 3px;
+            color: black;
             background-color: var(--primary-color);
         }
 
@@ -285,6 +289,7 @@
 
         .category-info {
             padding: 20px;
+            color: black;
         }
 
         .category-info h3 {
@@ -492,7 +497,7 @@
         }
 
         .cart-item-remove {
-            color: var(--light-text);
+            color: red;
             font-size: 12px;
             cursor: pointer;
         }
@@ -522,6 +527,10 @@
 
         .checkout-btn:hover {
             background-color: var(--primary-dark);
+        }
+
+        .section-heading {
+            color: black;
         }
 
         /* Footer */
@@ -609,7 +618,7 @@
             .hero h1 {
                 font-size: 2rem;
             }
-            
+
             .hero p {
                 font-size: 1rem;
             }
@@ -619,18 +628,18 @@
             .header-top {
                 flex-wrap: wrap;
             }
-            
+
             .search-bar {
                 order: 3;
                 width: 100%;
                 margin: 15px 0 0;
                 max-width: 100%;
             }
-            
+
             .mobile-menu-btn {
                 display: block;
             }
-            
+
             .nav-links {
                 position: absolute;
                 top: 100%;
@@ -645,29 +654,29 @@
                 overflow: hidden;
                 transition: max-height 0.3s;
             }
-            
+
             .nav-links.active {
                 max-height: 500px;
                 padding: 15px 0;
             }
-            
+
             .nav-links li {
                 padding: 10px 20px;
                 border-bottom: 1px solid var(--border-color);
             }
-            
+
             .hero {
                 padding: 40px 0;
             }
-            
+
             .hero h1 {
                 font-size: 1.8rem;
             }
-            
+
             .modal-overlay {
                 justify-content: center;
             }
-            
+
             .cart-modal {
                 max-width: 100%;
                 height: 80vh;
@@ -680,41 +689,40 @@
             .hero-content {
                 padding: 15px;
             }
-            
+
             .hero h1 {
                 font-size: 1.5rem;
             }
-            
+
             .cta-button {
                 padding: 10px 20px;
                 font-size: 14px;
             }
-            
+
             .section-title {
                 font-size: 24px;
+                color: black;
             }
         }
     </style>
 </head>
+
 <body>
     <header>
+        <!-- <?php include 'components/home-header-section.php'; ?> -->
         <div class="container">
             <div class="header-top">
                 <div class="logo">
                     <i class="fas fa-shopping-basket"></i>
                     <span>Sk Fruit</span>
                 </div>
-                
+
                 <div class="search-bar">
                     <input type="text" placeholder="Search for products...">
                     <button><i class="fas fa-search"></i></button>
                 </div>
-                
+
                 <div class="user-actions">
-                    <a href="login.html">
-                        <i class="far fa-user"></i>
-                        <span>Account</span>
-                    </a>
                     <a href="#">
                         <i class="far fa-heart"></i>
                         <span>Wishlist</span>
@@ -722,12 +730,12 @@
                     <a href="#" id="cart-btn" style="position: relative;">
                         <i class="fas fa-shopping-cart"></i>
                         <span>Cart</span>
-                        <span class="cart-count">0</span>
+                        <span class="cart-count" id="cart-products-counter">0</span>
                     </a>
                 </div>
             </div>
         </div>
-        
+
         <nav>
             <div class="container">
                 <button class="mobile-menu-btn" id="mobile-menu-btn">
@@ -743,7 +751,7 @@
             </div>
         </nav>
     </header>
-    
+
     <section class="hero">
         <div class="hero-content">
             <h1>Fresh Groceries Delivered to Your Doorstep</h1>
@@ -751,19 +759,20 @@
             <button class="cta-button">Shop Now</button>
         </div>
     </section>
-    
+
     <main class="container">
-        <h2 class="section-title">Shop by Category</h2>
-        <div class="categories" id="categories">
-            <!-- Categories will be loaded dynamically -->
-        </div>
-        
-        <h2 class="section-title">Featured Products</h2>
+
+        <!-- Categories Card Section -->
+        <?php include 'components/home-category-section.php'; ?>
+
+        <!-- Products Card Section -->
+        <h2 class="section-title section-heading">Featured Products</h2>
         <div class="products" id="products">
             <!-- Products will be loaded dynamically -->
         </div>
+
     </main>
-    
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -777,7 +786,7 @@
                         <a href="https://www.youtube.com/"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                
+
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul>
@@ -787,16 +796,16 @@
                         <li><a href="contact-form/Contact_form.html">Contact</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-column">
                     <h3>Customer Service</h3>
                     <ul>
                         <li><a href="login.html">My Account</a></li>
                         <li><a href="#">Wishlist</a></li>
                         <li><a href="contact-form/Contact_form.html">Shipping Policy</a></li>
-                        </ul>
+                    </ul>
                 </div>
-                
+
                 <div class="footer-column">
                     <h3>Contact Us</h3>
                     <ul>
@@ -806,7 +815,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="copyright">
                 &copy; 2025 YellowCart. haseebmalik827@gmail.com
             </div>
@@ -828,118 +837,106 @@
             <div class="cart-total">
                 Total: $<span id="cart-total">0.00</span>
             </div>
-<a href="checkout.html">
-    <button class="checkout-btn">Proceed to Checkout</button>
-</a>
+            <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+
         </div>
     </div>
 
     <script>
-        // Data for categories and products
-        const categoriesData = [
-            { id: 1, name: "Fruits & Vegetables", icon: "fas fa-apple-alt", items: "50+" },
-            { id: 2, name: "Beverages", icon: "fas fa-wine-bottle", items: "30+" },
-            { id: 3, name: "Bakery", icon: "fas fa-bread-slice", items: "25+" },
-            { id: 4, name: "Frozen Foods", icon: "fas fa-ice-cream", items: "40+" },
-            { id: 5, name: "Dairy & Eggs", icon: "fas fa-egg", items: "35+" },
-            { id: 6, name: "Meat & Seafood", icon: "fas fa-drumstick-bite", items: "45+" },
-            { id: 7, name: "Snacks", icon: "fas fa-cookie", items: "60+" },
-            { id: 8, name: "Pantry Staples", icon: "fas fa-jar", items: "55+" }
-        ];
-
-        const productsData = [
-            { id: 1, name: "Organic Bananas (1kg)", price: 2.99, oldPrice: 3.49, image: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e", badge: "Sale" },
-            { id: 2, name: "Fresh Strawberries (500g)", price: 4.99, image: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6", badge: "New" },
-            { id: 3, name: "Free Range Eggs (12pcs)", price: 3.49, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST6nN4R7SqtmCQXojJ2TUrLLQ_A85UqhZcnA&s" },
-            { id: 4, name: "Whole Grain Bread (500g)", price: 2.49, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff" },
-            { id: 5, name: "Organic Spinach (200g)", price: 1.99, oldPrice: 2.49, image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb", badge: "Sale" },
-            { id: 6, name: "Almond Milk (1L)", price: 3.99, image: "https://images.unsplash.com/photo-1550583724-b2692b85b150" },
-            { id: 7, name: "Greek Yogurt (500g)", price: 2.99, image: "https://www.shutterstock.com/image-photo/pictures-natural-fresh-fruit-juice-260nw-2335482853.jpg" },
-            { id: 8, name: "Organic Tomatoes (500g)", price: 2.29, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdNM_c7SaCTjOwwJ2h4RflkHizQIO1cPDqha_6tMzDWz4KHiuOnDRwD3xL8q5GpnC3GCs&usqp=CAU" }
-        ];
-
         // DOM Elements
-        const categoriesContainer = document.getElementById('categories');
         const productsContainer = document.getElementById('products');
         const cartBtn = document.getElementById('cart-btn');
         const cartModal = document.getElementById('cart-modal');
         const closeCartBtn = document.getElementById('close-cart');
         const cartItemsContainer = document.getElementById('cart-items');
         const cartTotalElement = document.getElementById('cart-total');
-        const cartCountElement = document.querySelector('.cart-count');
+        const cartCountElement = document.getElementById('cart-products-counter');
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const navLinks = document.getElementById('nav-links');
+        const checkoutBtn = document.getElementById('checkout-btn');
 
-        // Cart state
         let cart = [];
+        let productsData = [];
 
         // Initialize the app
-        document.addEventListener('DOMContentLoaded', () => {
-            renderCategories();
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchProducts();
             renderProducts();
             setupEventListeners();
+            loadCart();
         });
 
-        // Render categories
-        function renderCategories() {
-            categoriesContainer.innerHTML = categoriesData.map(category => `
-                <div class="category-card" data-id="${category.id}">
-                    <div class="category-img">
-                        <i class="${category.icon}"></i>
-                    </div>
-                    <div class="category-info">
-                        <h3>${category.name}</h3>
-                        <p>${category.items} items</p>
-                    </div>
-                </div>
-            `).join('');
+        // Fetch products from API
+        async function fetchProducts() {
+            try {
+                const res = await fetch(`${baseURL}/controllers/public/product.php?short=true`);
+                const json = await res.json();
+
+                if (json.success) {
+                    productsData = json.data.map(product => {
+                        const hasOffer = product.offer && Object.keys(product.offer).length > 0;
+                        const discountPrice = hasOffer ? product.offer.discount_price : null;
+                        const discountPercent = hasOffer ? product.offer.discount_percent : null;
+
+                        return {
+                            id: product.id,
+                            name: product.name,
+                            price: discountPrice ?? product.price,
+                            oldPrice: discountPrice ? product.price : null,
+                            image: `${baseURL}/${product.image.replace(/^SkFruit\//, '')}`,
+                            badge: discountPercent ? `${discountPercent}% off` : null,
+                            isSale: product.offer?.name ? 'Sale' : null
+                        };
+                    });
+                } else {
+                    console.error('Failed to fetch products:', json.message);
+                }
+            } catch (err) {
+                console.error('Error fetching products:', err);
+            }
         }
 
         // Render products
         function renderProducts() {
             productsContainer.innerHTML = productsData.map(product => `
-                <div class="product-card" data-id="${product.id}">
-                    <div class="product-img">
-                        <img src="${product.image}" alt="${product.name}">
-                        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-                    </div>
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <div class="product-price">
-                            <span class="current-price">$${product.price.toFixed(2)}</span>
-                            ${product.oldPrice ? `<span class="old-price">$${product.oldPrice.toFixed(2)}</span>` : ''}
-                        </div>
-                        <button class="add-to-cart">
-                            <i class="fas fa-cart-plus"></i> Add to Cart
-                        </button>
-                    </div>
+        <div class="product-card" data-id="${product.id}" style="border: 1px solid #ddd; padding: 10px; margin: 10px; width: 250px;">
+            <div class="product-img" style="position: relative;">
+                <img src="${product.image}" alt="${product.name}" >
+                ${product.isSale ? `<span style=" position: absolute; top: 8px; left: 8px; background-color: green; color: white; padding: 2px 6px; font-size: 12px; border-radius: 3px;">${product.isSale} ${product.badge}</span>` : ''}
+            </div>
+            <div class="product-info" style="margin-top: 10px;">
+                <h3 style="margin: 0 0 10px; font-size: 18px;">${product.name}</h3>
+                <div class="product-price" style="margin-bottom: 10px;">
+                    <span style="font-weight: bold; color: #000; font-size: 16px;">
+                        $${product.price.toFixed(2)}
+                    </span>
+                    ${product.oldPrice ? `<span style=" text-decoration: line-through; color: #888; font-size: 14px; margin-left: 8px;">$${product.oldPrice.toFixed(2)}</span>` : ''}
                 </div>
-            `).join('');
+                <button class="add-to-cart" style=" background-color: #28a745; color: white; border: none; padding: 8px 12px; cursor: pointer; font-size: 14px; border-radius: 4px; ">
+                    <i class="fas fa-cart-plus" style="margin-right: 5px;"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    `).join('');
         }
 
-// checkout button event listener
 
-checkoutBtn.addEventListener('click', () => {
-    if (cart.length === 0) {
-        alert('Your cart is empty. Please add some items before checkout.');
-        return;
-    }
-    // Save cart to localStorage before redirecting
-    localStorage.setItem('cart', JSON.stringify(cart));
-    // Redirect to checkout page
-    window.location.href = 'checkout.html';
-});
-
-
+        // Checkout button event listener
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add some items before checkout.');
+                return;
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            window.location.href = 'checkout.php';
+        });
 
         // Setup event listeners
         function setupEventListeners() {
-            // Mobile menu toggle
             mobileMenuBtn.addEventListener('click', () => {
                 navLinks.classList.toggle('active');
             });
 
-            // Cart toggle
             cartBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 cartModal.classList.add('active');
@@ -951,7 +948,6 @@ checkoutBtn.addEventListener('click', () => {
                 document.body.style.overflow = 'auto';
             });
 
-            // Close modal when clicking outside
             cartModal.addEventListener('click', (e) => {
                 if (e.target === cartModal) {
                     cartModal.classList.remove('active');
@@ -959,7 +955,6 @@ checkoutBtn.addEventListener('click', () => {
                 }
             });
 
-            // Add to cart buttons
             productsContainer.addEventListener('click', (e) => {
                 if (e.target.classList.contains('add-to-cart') || e.target.closest('.add-to-cart')) {
                     const productCard = e.target.closest('.product-card');
@@ -968,7 +963,6 @@ checkoutBtn.addEventListener('click', () => {
                 }
             });
 
-            // Remove item from cart
             cartItemsContainer.addEventListener('click', (e) => {
                 if (e.target.classList.contains('cart-item-remove')) {
                     const cartItem = e.target.closest('.cart-item');
@@ -984,7 +978,7 @@ checkoutBtn.addEventListener('click', () => {
             if (!product) return;
 
             const existingItem = cart.find(item => item.id === productId);
-            
+
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
@@ -1009,43 +1003,63 @@ checkoutBtn.addEventListener('click', () => {
 
         // Update cart UI
         function updateCart() {
-            // Update cart items
-            cartItemsContainer.innerHTML = cart.map(item => `
-                <div class="cart-item" data-id="${item.id}">
-                    <div class="cart-item-img">
-                        <img src="${item.image}" alt="${item.name}">
-                    </div>
-                    <div class="cart-item-info">
-                        <div class="cart-item-title">${item.name}</div>
-                        <div class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
-                        <div>Quantity: ${item.quantity}</div>
-                        <div class="cart-item-remove">Remove</div>
-                    </div>
-                </div>
-            `).join('');
+            cartItemsContainer.innerHTML = cart.map(item => {
+                const itemTotalPrice = item.price * item.quantity;
 
-            // Update cart total
+                return `
+            <div class="cart-item" data-id="${item.id}">
+                <div class="cart-item-img">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="cart-item-info">
+                    <div class="cart-item-title">${item.name}</div>
+                    <div class="cart-item-price">
+                        $${item.price.toFixed(2)} × 
+                        <input type="number" class="cart-qty-input" data-id="${item.id}" value="${item.quantity}" min="1" style="width: 50px; text-align: center;" />
+                        = <strong>$${itemTotalPrice.toFixed(2)}</strong>
+                    </div>
+                    <div class="cart-item-remove" style="color: red; cursor: pointer;">Remove</div>
+                </div>
+            </div>
+        `;
+            }).join('');
+
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             cartTotalElement.textContent = total.toFixed(2);
 
-            // Update cart count
             const itemCount = cart.reduce((count, item) => count + item.quantity, 0);
             cartCountElement.textContent = itemCount;
 
-            // Save to localStorage
             localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Setup quantity input listeners
+            const qtyInputs = document.querySelectorAll('.cart-qty-input');
+            qtyInputs.forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const newQty = parseInt(e.target.value);
+                    const productId = parseInt(e.target.dataset.id);
+
+                    if (newQty >= 1) {
+                        const cartItem = cart.find(item => item.id === productId);
+                        if (cartItem) {
+                            cartItem.quantity = newQty;
+                            updateCart();
+                        }
+                    }
+                });
+            });
         }
 
-        // Show notification when item is added to cart
+        // Notification for added items
         function showAddedToCartNotification(productName) {
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.innerHTML = `
-                <div style="position: fixed; bottom: 20px; right: 20px; background-color: var(--primary-color); color: white; padding: 15px; border-radius: 4px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); z-index: 1000; animation: slideIn 0.3s ease-out;">
-                    <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
-                    ${productName} added to cart!
-                </div>
-            `;
+            <div style="position: fixed; bottom: 20px; right: 20px; background-color: var(--primary-color); color: white; padding: 15px; border-radius: 4px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); z-index: 1000; animation: slideIn 0.3s ease-out;">
+                <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+                ${productName} added to cart!
+            </div>
+        `;
             document.body.appendChild(notification);
 
             setTimeout(() => {
@@ -1068,5 +1082,7 @@ checkoutBtn.addEventListener('click', () => {
         // Initialize cart
         loadCart();
     </script>
+
 </body>
+
 </html>

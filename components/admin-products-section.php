@@ -76,6 +76,8 @@
                     <Input type="text" id="product-description" name="product_description" style="width:100%; padding:8px 12px; font-size:14px; border:1px solid #ccc; border-radius:5px;" />
                 </div>
 
+                <p id="product-error-message" style="color:red; margin-bottom:10px; display:none;"></p>
+
             </div>
             <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:10px;">
                 <button type="submit" class="modal-btn modal-btn-submit" id="product-btn-submit" style="padding:8px 14px; border:none; border-radius:5px; font-size:14px; cursor:pointer; background-color:#28a745; color:#fff;">Add product</button>
@@ -101,6 +103,7 @@
         const productStockInput = document.getElementById('product-stock');
         const productDescriptionInput = document.getElementById('product-description');
 
+        const productErrorMessage = document.getElementById('product-error-message');
         const submitButton = document.getElementById('product-btn-submit');
         const productModalHeader = document.getElementById('product-modal-header');
         const productImagePreviewContainer = document.getElementById('product-image-preview-container');
@@ -114,6 +117,18 @@
         // Hide modal
         function hideModal() {
             productModal.style.display = 'none';
+        }
+
+        // Show Error Message
+        function displayFormError(message) {
+            productErrorMessage.textContent = message;
+            productErrorMessage.style.display = 'block';
+        }
+
+        // Hide Error Message
+        function clearFormError() {
+            productErrorMessage.textContent = '';
+            productErrorMessage.style.display = 'none';
         }
 
         // Generalized function for fetch requests
@@ -139,7 +154,7 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('An error occurred: ' + error.message);
+                    throw error; // <-- re-throw to propagate error to caller
                 });
         }
 
@@ -215,6 +230,8 @@
         // Reset modal for adding new product
         function resetproductModal() {
             productForm.reset();
+            clearFormError();
+
             productImageInput.value = '';
             productTitleInput.value = '';
             productCategoryInput.value = '';
@@ -247,10 +264,8 @@
             document.getElementById('product-id').value = id;
 
             if (imagePath) {
-                console.log(imagePath)
                 productImagePreviewContainer.style.display = 'block';
                 productImagePreview.src = imagePath;
-                console.log(productImagePreview)
             } else {
                 productImagePreviewContainer.style.display = 'none';
                 productImagePreview.src = '';
@@ -308,13 +323,14 @@
 
             sendproductRequest(action, formData)
                 .then(() => {
+                    // Only success alert here
                     alert(`${ isEdit ? 'Product updated successfully!' : 'Product saved successfully!' }`);
                     productForm.reset();
                     fetchProducts();
                     hideModal();
                 })
                 .catch(err => {
-                    alert(err.message || 'Something went wrong');
+                    displayFormError(err.message || 'Something went wrong');
                 });
         });
 

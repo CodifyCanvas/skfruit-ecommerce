@@ -1,3 +1,6 @@
+<?php 
+include('./config.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,7 +170,7 @@
 
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" class="form-control" required>
+                        <input type="number" id="phone" class="form-control" required>
                     </div>
 
                     <h3 class="checkout-title">Payment Method</h3>
@@ -231,6 +234,7 @@
     </footer>
 
     <script>
+        const baseURL = '<?= $baseURL ?>';
         document.addEventListener('DOMContentLoaded', function() {
             // Load cart items from localStorage
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -279,51 +283,92 @@
             }
             
             // Handle place order button click
-            placeOrderBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const form = document.getElementById('checkout-form');
-                const isValid = form.checkValidity();
-                
-                if (!isValid) {
-                    form.reportValidity();
-                    return;
-                }
-                
-                // In a real application, you would process the payment here
-                // For this demo, we'll just show a success message
-                
-                // Create order object
-                const order = {
-                    customer: {
-                        name: document.getElementById('full-name').value,
-                        email: document.getElementById('email').value,
-                        address: document.getElementById('address').value,
-                        city: document.getElementById('city').value,
-                        zip: document.getElementById('zip').value,
-                        country: document.getElementById('country').value,
-                        phone: document.getElementById('phone').value
-                    },
-                    paymentMethod: document.querySelector('input[name="payment"]:checked').value,
-                    items: cart,
-                    subtotal: parseFloat(subtotalElement.textContent.replace('$', '')),
-                    shipping: parseFloat(shippingCostElement.textContent.replace('$', '')),
-                    total: parseFloat(orderTotalElement.textContent.replace('$', '')),
-                    date: new Date().toISOString(),
-                    status: 'processing'
-                };
-                
-                // Save order to localStorage (in a real app, you would send to a server)
-                const orders = JSON.parse(localStorage.getItem('orders')) || [];
-                orders.push(order);
-                localStorage.setItem('orders', JSON.stringify(orders));
-                
-                // Clear cart
-                localStorage.removeItem('cart');
-                
-                // Redirect to confirmation page
-                window.location.href = 'order-confirmation.html';
-            });
+            placeOrderBtn.addEventListener('click', async function(e) {
+  e.preventDefault();
+
+  if (!validateForm()) {
+    alert('Please fill out all required fields correctly.');
+    return;
+  }
+
+  // Collect form data
+  const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+  const orderData = {
+    customer: {
+      name: document.getElementById('full-name').value,
+      email: document.getElementById('email').value,
+      address: document.getElementById('address').value,
+      country: document.getElementById('country').value,
+      phone: document.getElementById('phone').value
+    },
+    paymentMethod,
+    items: cart,
+    subtotal: parseFloat(subtotalElement.textContent.replace('$', '')),
+    shipping: parseFloat(shippingCostElement.textContent.replace('$', '')),
+    total: parseFloat(orderTotalElement.textContent.replace('$', '')),
+    date: new Date().toISOString(),
+    status: 'processing'
+  };
+
+  if (paymentMethod === 'credit-card') {
+    orderData.paymentDetails = {
+      cardNumber: document.getElementById('card-number').value,
+      expiry: document.getElementById('expiry').value,
+      cvv: document.getElementById('cvv').value
+    };
+
+    // Basic validation for credit card fields (add your own as needed)
+    if (!orderData.paymentDetails.cardNumber.trim() ||
+        !orderData.paymentDetails.expiry.trim() ||
+        !orderData.paymentDetails.cvv.trim()) {
+      alert('Please fill in all credit card details.');
+      return;
+    }
+  }
+
+  try {
+    const response = await fetch(`${baseURL}/controllers/public/checkout.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderData)
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      // Clear entire cart data
+  localStorage.removeItem('cart');
+
+      // Store only order ID and createdAt timestamp
+  localStorage.setItem('lastOrder', JSON.stringify({
+    orderId: result.orderId,
+    createdAt: new Date().toISOString()
+  }));
+
+      // Redirect to confirmation page WITHOUT orderId in URL
+  window.location.href = 'order-confirmation.php';
+    } else {
+      alert('Failed to place order: ' + (result.message || 'Unknown error'));
+    }
+  } catch (error) {
+    console.error('Error placing order:', error);
+    alert('An error occurred. Please try again.');
+  }
+});
+
+placeOrderBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+
+        if (!validateForm()) {
+            alert('Please fill out all required fields correctly.');
+            return;
+        }
+
+        // your order submission logic here...
+    });
             
             // Initialize the page
             updateOrderSummary();
@@ -354,18 +399,6 @@ function validateForm() {
     
     return isValid;
 }
-
-// Update place order button event listener
-placeOrderBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-        alert('Please fill out all required fields correctly.');
-        return;
-    }
-    
-    // Rest of your existing code...
-});
     </script>
 </body>
 </html>
